@@ -1,0 +1,36 @@
+<section class="metrics section-py" id="metrics" aria-labelledby="metrics-heading">
+  <div class="container">
+    <div class="metrics-intro fade-in-up">
+      <span class="chip">Performance</span>
+      <h2 class="sec-heading" id="metrics-heading">Numbers that define<br><span class="grad-bp">enterprise AI</span></h2>
+      <p class="sec-sub">Real metrics from production deployments across 500+ enterprise customers worldwide.</p>
+    </div>
+    <div class="metrics-grid">
+      @for (s of stats; track s.label; let i = $index) {
+        <div class="metric-card" [style.--mc]="s.color">
+          <div class="mc-top">
+            <div class="mc-ring" [attr.aria-label]="s.label + ' progress'" role="progressbar" [attr.aria-valuenow]="s.progress">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="4"/>
+                <circle cx="32" cy="32" r="26" fill="none" [attr.stroke]="s.color" stroke-width="4"
+                  stroke-linecap="round"
+                  class="ring-arc"
+                  [style.stroke-dasharray]="'163'"
+                  [style.stroke-dashoffset]="163 - (163 * s.progress / 100)"
+                  transform="rotate(-90 32 32)"/>
+              </svg>
+              <div class="ring-center" [style.color]="s.color">
+                <span #counterEl [attr.data-idx]="i">0{{ s.suffix }}</span>
+              </div>
+            </div>
+            <div class="mc-label">{{ s.label }}</div>
+          </div>
+          <p class="mc-desc">{{ s.desc }}</p>
+          <div class="mc-bar">
+            <div class="mc-fill" [style.width]="s.progress + '%'" [style.background]="s.color"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

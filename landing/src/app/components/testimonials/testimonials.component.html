@@ -1,0 +1,45 @@
+<section class="testimonials section-py" id="testimonials" aria-labelledby="test-heading">
+  <div class="container">
+    <div class="testimonials-intro fade-in-up">
+      <span class="chip">Customer Stories</span>
+      <h2 class="sec-heading" id="test-heading">What enterprise teams<br><span class="grad-bp">say about NeuralOS</span></h2>
+    </div>
+
+    <div class="carousel" aria-live="polite">
+      @for (item of items; track item.name; let i = $index) {
+        @if (current() === i) {
+          <div class="tcard" [style.--tc]="item.color" role="article" [attr.aria-label]="'Testimonial from ' + item.name">
+            <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+            <div class="stars" aria-label="5 star rating">
+              @for (s of [1,2,3,4,5]; track s) {
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              }
+            </div>
+            <blockquote class="tquote">&ldquo;{{ item.quote }}&rdquo;</blockquote>
+            <div class="tperson">
+              <div class="tavatar" [style.background]="'linear-gradient(135deg,' + item.color + ',rgba(139,92,246,.8))'">{{ item.initials }}</div>
+              <div class="tinfo">
+                <div class="tname">{{ item.name }}</div>
+                <div class="trole">{{ item.role }}, {{ item.company }}</div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="carousel-nav">
+      <button class="nav-btn" (click)="prev()" aria-label="Previous testimonial">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="dots" role="tablist">
+        @for (item of items; track item.name; let i = $index) {
+          <button class="dot-btn" [class.active]="current() === i" (click)="goto(i)" role="tab" [attr.aria-selected]="current() === i" [attr.aria-label]="'Go to testimonial ' + (i + 1)"></button>
+        }
+      </div>
+      <button class="nav-btn" (click)="next()" aria-label="Next testimonial">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>

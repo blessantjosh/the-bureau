@@ -1,0 +1,13 @@
+<section class="trusted" aria-label="Trusted by leading enterprises">
+  <div class="trusted-label">Trusted by 500+ enterprise teams worldwide</div>
+  <div class="marquee-wrap">
+    <div class="marquee-track" aria-hidden="true">
+      @for (logo of doubled; track logo.name + $index) {
+        <div class="logo-pill" [style.--lc]="logo.color">
+          <div class="logo-icon" [style.background]="'linear-gradient(135deg,' + logo.color + ',rgba(0,0,0,.3))'">{{ logo.abbr }}</div>
+          <span>{{ logo.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

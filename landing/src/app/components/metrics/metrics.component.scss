@@ -1,0 +1,40 @@
+.metrics { background: #0B1120; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.section-py { padding: 120px 0; }
+.metrics-intro { text-align:center;margin-bottom:56px; }
+.chip { display:inline-flex;align-items:center;gap:7px;padding:5px 15px;border-radius:9999px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.28);font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:22px; }
+.sec-heading { font-size:clamp(2rem,4vw,3.25rem);font-weight:800;line-height:1.14;letter-spacing:-.025em;color:#F8FAFC;margin-bottom:18px; }
+.grad-bp { background:linear-gradient(135deg,#60A5FA,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.sec-sub { font-size:1.05rem;color:#94A3B8;max-width:520px;line-height:1.76;margin:0 auto; }
+
+.metrics-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:22px; @media(max-width:900px){grid-template-columns:repeat(2,1fr);} @media(max-width:560px){grid-template-columns:1fr;} }
+
+.metric-card {
+  background:rgba(255,255,255,.028);
+  border:1px solid rgba(255,255,255,.07);
+  border-top:2px solid var(--mc,#3B82F6);
+  border-radius:18px;
+  padding:28px;
+  transition:all .3s;
+  &:hover{box-shadow:0 12px 40px rgba(0,0,0,.22);transform:translateY(-3px);}
+}
+
+.mc-top { display:flex;align-items:center;gap:16px;margin-bottom:14px; }
+
+.mc-ring { position:relative;width:64px;height:64px;flex-shrink:0; svg{width:100%;height:100%;} }
+
+.ring-arc { transition: stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1); }
+
+.ring-center {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  span{font-size:.72rem;font-weight:800;letter-spacing:-.01em;}
+}
+
+.mc-label { font-size:.9rem;font-weight:700;color:#F8FAFC;line-height:1.35; }
+
+.mc-desc { font-size:.82rem;color:#64748B;line-height:1.65;margin-bottom:14px; }
+
+.mc-bar { height:3px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden; }
+.mc-fill { height:100%;border-radius:3px;transition:width 1.5s cubic-bezier(.4,0,.2,1); }
+
+.fade-in-up { opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease;&.visible{opacity:1;transform:translateY(0);} }

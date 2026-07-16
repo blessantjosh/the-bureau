@@ -1,0 +1,71 @@
+<footer class="footer" role="contentinfo">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand-logo" href="#" aria-label="NeuralOS Home">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="14" stroke="url(#fg)" stroke-width="1.5"/>
+              <circle cx="16" cy="16" r="5" fill="url(#fg)"/>
+              <circle cx="8" cy="10" r="2" fill="#60A5FA"/>
+              <circle cx="24" cy="10" r="2" fill="#A78BFA"/>
+              <circle cx="8" cy="22" r="2" fill="#34D399"/>
+              <circle cx="24" cy="22" r="2" fill="#22D3EE"/>
+              <defs>
+                <linearGradient id="fg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3B82F6"/>
+                  <stop offset="100%" stop-color="#8B5CF6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span>Neural<span class="logo-grad">OS</span></span>
+          </a>
+          <p class="brand-desc">The enterprise AI platform that transforms how businesses process, analyze, and act on intelligence.</p>
+          <div class="social-links" aria-label="Social media links">
+            @for (s of social; track s.name) {
+              <a [href]="s.href" class="social-icon" [attr.aria-label]="s.name" [innerHTML]="s.icon" target="_blank" rel="noopener noreferrer"></a>
+            }
+          </div>
+        </div>
+
+        @for (col of links; track col.heading) {
+          <div class="link-col">
+            <h3 class="col-head">{{ col.heading }}</h3>
+            <ul class="col-links" role="list">
+              @for (item of col.items; track item) {
+                <li><a class="col-link" href="#" (click)="$event.preventDefault(); scrollTo(item)">{{ item }}</a></li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+
+      <div class="newsletter">
+        <div class="nl-copy">
+          <h3 class="nl-title">Stay ahead of enterprise AI</h3>
+          <p class="nl-desc">Weekly insights on AI agents, RAG, and enterprise automation.</p>
+        </div>
+        <form class="nl-form" (submit)="$event.preventDefault()" aria-label="Newsletter signup">
+          <input type="email" class="nl-input" placeholder="Enter your work email" aria-label="Email address"/>
+          <button type="submit" class="nl-btn" aria-label="Subscribe to newsletter">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <span>&copy; {{ year }} NeuralOS, Inc. All rights reserved.</span>
+      <div class="legal-links">
+        @for (l of ['Privacy Policy','Terms of Service','Cookie Policy','Security']; track l) {
+          <a href="#" class="legal-link">{{ l }}</a>
+        }
+      </div>
+      <div class="compliance-badges">
+        @for (b of ['SOC2','HIPAA','GDPR','ISO 27001']; track b) {
+          <span class="cbadge">{{ b }}</span>
+        }
+      </div>
+    </div>
+  </div>
+</footer>

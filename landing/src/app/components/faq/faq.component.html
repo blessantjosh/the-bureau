@@ -1,0 +1,29 @@
+<section class="faq section-py" id="faq" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-intro fade-in-up">
+      <span class="chip">FAQ</span>
+      <h2 class="sec-heading" id="faq-heading">Frequently asked<br><span class="grad-bp">questions</span></h2>
+      <p class="sec-sub">Everything you need to know before you start building.</p>
+    </div>
+    <div class="faq-list" role="list">
+      @for (f of faqs; track f.q; let i = $index) {
+        <div class="faq-item fade-in-up" [class.open]="open() === i" role="listitem">
+          <button class="faq-q" (click)="toggle(i)" [attr.aria-expanded]="open() === i" [attr.aria-controls]="'faq-a-' + i" [id]="'faq-q-' + i">
+            <span>{{ f.q }}</span>
+            <div class="faq-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19" [attr.opacity]="open() === i ? 0 : 1" style="transition:opacity .25s"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+          </button>
+          @if (open() === i) {
+            <div class="faq-a" [id]="'faq-a-' + i" role="region" [attr.aria-labelledby]="'faq-q-' + i">
+              <p>{{ f.a }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>

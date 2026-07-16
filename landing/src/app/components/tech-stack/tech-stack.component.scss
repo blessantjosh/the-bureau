@@ -1,0 +1,42 @@
+.tech { background: var(--bg-primary); }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.section-py { padding: 120px 0; }
+.tech-intro { text-align:center;margin-bottom:56px; }
+.chip { display:inline-flex;align-items:center;gap:7px;padding:5px 15px;border-radius:9999px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.28);font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:22px; }
+.sec-heading { font-size:clamp(2rem,4vw,3.25rem);font-weight:800;line-height:1.14;letter-spacing:-.025em;color:#F8FAFC;margin-bottom:18px; }
+.grad-bp { background:linear-gradient(135deg,#60A5FA,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.sec-sub { font-size:1.05rem;color:#94A3B8;max-width:500px;line-height:1.76;margin:0 auto; }
+
+.tech-grid {
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:14px;
+  @media(max-width:1024px){grid-template-columns:repeat(4,1fr);}
+  @media(max-width:640px){grid-template-columns:repeat(3,1fr);}
+}
+
+.tech-card {
+  position:relative;
+  background:rgba(255,255,255,.028);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:18px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:default;
+  overflow:hidden;
+  transition:all .28s;
+  &:hover {
+    border-color:var(--tc,#3B82F6);
+    box-shadow:0 8px 28px rgba(0,0,0,.22), 0 0 20px color-mix(in srgb,var(--tc,#3B82F6) 25%,transparent);
+    transform:perspective(400px) rotateY(-6deg) rotateX(4deg) scale(1.04);
+    .tc-glow{opacity:.15;}
+  }
+}
+
+.tc-glow { position:absolute;inset:0;opacity:0;transition:opacity .35s;filter:blur(20px);pointer-events:none; }
+
+.tc-abbr { width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:.02em; }
+
+.tc-name { font-size:.65rem;font-weight:600;color:#64748B;text-align:center;letter-spacing:.02em; }
+
+.fade-in-up { opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;&.visible{opacity:1;transform:translateY(0);} }

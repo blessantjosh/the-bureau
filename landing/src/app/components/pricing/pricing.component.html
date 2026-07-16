@@ -1,0 +1,57 @@
+<section class="pricing section-py" id="pricing" aria-labelledby="pricing-heading">
+  <div class="container">
+    <div class="pricing-intro fade-in-up">
+      <span class="chip">Pricing</span>
+      <h2 class="sec-heading" id="pricing-heading">Transparent pricing for<br><span class="grad-bp">every stage of growth</span></h2>
+      <p class="sec-sub">Start free. Scale confidently. No hidden fees, no surprises.</p>
+
+      <div class="billing-toggle" role="group" aria-label="Billing period">
+        <button class="toggle-opt" [class.active]="!annual()" (click)="annual.set(false)" aria-pressed="false">Monthly</button>
+        <button class="toggle-switch" (click)="toggleAnnual()" [attr.aria-label]="'Switch to ' + (annual() ? 'monthly' : 'annual') + ' billing'">
+          <div class="toggle-knob" [class.right]="annual()"></div>
+        </button>
+        <button class="toggle-opt" [class.active]="annual()" (click)="annual.set(true)" aria-pressed="true">
+          Annual <span class="save-badge">Save 17%</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+      @for (p of plans; track p.name) {
+        <div class="plan-card" [class.popular]="p.popular" [style.--pc]="p.color" [attr.aria-label]="p.name + ' plan'">
+          @if (p.popular) {
+            <div class="popular-badge">Most Popular</div>
+          }
+          <div class="plan-head">
+            <div class="plan-name">{{ p.name }}</div>
+            <div class="plan-desc">{{ p.desc }}</div>
+          </div>
+          <div class="plan-price">
+            <span class="price-val">{{ getPrice(p) }}</span>
+            @if (p.monthly !== 0) {
+              <span class="price-per">/month</span>
+            }
+          </div>
+          @if (annual() && p.monthly !== 0) {
+            <div class="price-note">Billed annually &mdash; saves ${{ (p.monthly - p.annual) * 12 }}/year</div>
+          }
+
+          <ul class="feat-list" role="list">
+            @for (f of p.features; track f) {
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                {{ f }}
+              </li>
+            }
+          </ul>
+
+          <button class="plan-cta btn-magnetic" [class.cta-primary]="p.popular" [style.borderColor]="!p.popular ? p.color : ''" [attr.aria-label]="p.cta + ' - ' + p.name + ' plan'">
+            {{ p.cta }}
+          </button>
+        </div>
+      }
+    </div>
+
+    <p class="pricing-note">All plans include a 14-day free trial. No credit card required. Cancel anytime.</p>
+  </div>
+</section>

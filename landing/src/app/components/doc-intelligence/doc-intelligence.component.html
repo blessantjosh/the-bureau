@@ -1,0 +1,76 @@
+<section class="doc-sec section-py" id="doc-intelligence" aria-labelledby="doc-heading">
+  <div class="container">
+    <div class="doc-intro fade-in-up">
+      <span class="chip">Document Intelligence</span>
+      <h2 class="sec-heading" id="doc-heading">Turn any document into<br><span class="grad-bp">actionable intelligence</span></h2>
+      <p class="sec-sub">Drag, drop, and let NeuralOS handle the rest. From raw files to queryable knowledge in under 3 seconds.</p>
+    </div>
+
+    <div class="doc-layout fade-in-up">
+      <div class="upload-side">
+        <div class="upload-zone" [class.dragging]="isDragging()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)" role="region" aria-label="Document upload area">
+          <div class="upload-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p class="upload-text">Drop files here or <span>browse</span></p>
+          <div class="doc-types">
+            @for (t of docTypes; track t) {
+              <span class="doc-badge">{{ t }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="embed-viz" aria-label="Vector embedding visualization">
+          <div class="viz-label">Embedding Space</div>
+          <svg class="viz-svg" viewBox="0 0 300 180" aria-hidden="true">
+            @for (d of dots; track d.x + '-' + d.y) {
+              <circle [attr.cx]="d.x" [attr.cy]="d.y" r="4"
+                [attr.fill]="d.active ? '#3B82F6' : '#8B5CF6'"
+                [attr.opacity]="d.active ? '0.8' : '0.35'"
+                [style.animation]="'dotPulse ' + (1.5 + d.x * 0.01) + 's ease-in-out infinite alternate'"/>
+            }
+            <ellipse cx="80" cy="70" rx="50" ry="35" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1" stroke-dasharray="4 4"/>
+            <ellipse cx="200" cy="110" rx="60" ry="40" fill="none" stroke="rgba(139,92,246,.2)" stroke-width="1" stroke-dasharray="4 4"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="pipeline-side">
+        <div class="pip-label-main">Processing Pipeline</div>
+        @for (step of steps; track step.label; let i = $index) {
+          <div class="pip-step" [class.active]="currentStep() === i" [class.done]="currentStep() > i" [style.--sc]="step.color">
+            <div class="step-icon" [style.background]="currentStep() >= i ? step.color : 'rgba(255,255,255,.05)'">{{ step.icon }}</div>
+            <div class="step-info">
+              <div class="step-name">{{ step.label }}</div>
+              <div class="step-desc">{{ step.desc }}</div>
+            </div>
+            @if (currentStep() > i) {
+              <svg class="step-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" aria-label="Complete"><path d="M20 6L9 17l-5-5"/></svg>
+            }
+            @if (currentStep() === i) {
+              <div class="step-spinner" aria-label="Processing"></div>
+            }
+          </div>
+          @if (i < steps.length - 1) {
+            <div class="step-line" [class.active]="currentStep() > i"></div>
+          }
+        }
+
+        <div class="result-card" [class.visible]="currentStep() === 4">
+          <div class="rc-head">✅ Document Ready</div>
+          <div class="rc-stats">
+            <span>1,247 chunks indexed</span>
+            <span>•</span>
+            <span>99.1% confidence</span>
+            <span>•</span>
+            <span>2.3s total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

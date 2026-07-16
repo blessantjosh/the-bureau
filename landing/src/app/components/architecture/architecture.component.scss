@@ -1,0 +1,103 @@
+.arch { background: linear-gradient(180deg, var(--bg-primary) 0%, #0B1120 50%, var(--bg-primary) 100%); }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.section-py { padding: 120px 0; }
+
+.arch-intro { text-align: center; margin-bottom: 64px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 15px; border-radius: 9999px;
+  background: rgba(59,130,246,.09); border: 1px solid rgba(59,130,246,.28);
+  font-size: .73rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #60A5FA;
+  margin-bottom: 22px;
+}
+
+.sec-heading { font-size: clamp(2rem,4vw,3.25rem); font-weight: 800; line-height: 1.14; letter-spacing: -.025em; color: #F8FAFC; margin-bottom: 18px; }
+.grad-bp { background: linear-gradient(135deg,#60A5FA,#A78BFA); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.sec-sub { font-size: 1.05rem; color: #94A3B8; max-width: 540px; line-height: 1.76; margin: 0 auto; }
+
+.arch-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 48px;
+  align-items: start;
+  @media (max-width: 1024px) { grid-template-columns: 1fr; }
+}
+
+.arch-flow { display: flex; flex-direction: column; }
+
+.arch-node { display: flex; flex-direction: column; }
+
+.node-wrap {
+  display: flex; align-items: center; gap: 18px;
+  padding: 16px 22px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.065);
+  border-left: 3px solid var(--nc, #3B82F6);
+  border-radius: 14px;
+  cursor: default;
+  transition: all .28s;
+  &:hover { background: rgba(255,255,255,.048); transform: translateX(6px); box-shadow: 0 6px 28px rgba(0,0,0,.2); }
+}
+
+.node-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+
+.node-info { flex: 1; }
+.node-label { display: block; font-size: .92rem; font-weight: 700; color: #F8FAFC; margin-bottom: 2px; }
+.node-sub { font-size: .75rem; color: #64748B; }
+
+.node-ping {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--nc, #3B82F6);
+  flex-shrink: 0;
+  animation: ping 2.2s ease-in-out infinite;
+}
+
+.node-connector {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding-left: 34px; height: 26px; position: relative; overflow: hidden;
+}
+
+.connector-fill { width: 2px; height: 100%; background: rgba(255,255,255,.07); }
+
+.connector-flow {
+  position: absolute; top: 0; left: 34px;
+  width: 2px; height: 100%;
+  background: linear-gradient(180deg, transparent, #3B82F6, transparent);
+  animation: flowDown 2s linear infinite;
+}
+
+.arch-panel {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  overflow: hidden;
+  position: sticky;
+  top: 100px;
+  @media (max-width: 1024px) { position: static; }
+}
+
+.panel-header { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.06); }
+
+.live-ind { display: flex; align-items: center; gap: 7px; font-size: .72rem; font-weight: 600; color: #10B981; text-transform: uppercase; letter-spacing: .06em; }
+
+.live-dot { width: 7px; height: 7px; background: #10B981; border-radius: 50%; animation: ping 1.5s ease-in-out infinite; }
+
+.panel-metrics { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+
+.pm-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 11px; background: rgba(255,255,255,.02); border-radius: 8px;
+}
+
+.pm-label { font-size: .78rem; color: #64748B; }
+.pm-val { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
+
+.panel-chart { padding: 0 14px 14px; svg { width: 100%; height: 56px; } }
+
+.panel-footer { padding: 12px 18px; border-top: 1px solid rgba(255,255,255,.06); font-size: .78rem; color: #64748B; }
+
+.fade-in-up { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s ease; &.visible { opacity: 1; transform: translateY(0); } }
+
+@keyframes ping { 0%,100%{box-shadow:0 0 0 0 var(--nc,#3B82F6);opacity:.9;} 60%{box-shadow:0 0 0 6px transparent;opacity:.6;} }
+@keyframes flowDown { from{top:-100%;} to{top:100%;} }

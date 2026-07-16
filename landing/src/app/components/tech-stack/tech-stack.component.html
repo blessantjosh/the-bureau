@@ -1,0 +1,18 @@
+<section class="tech section-py" id="tech-stack" aria-labelledby="tech-heading">
+  <div class="container">
+    <div class="tech-intro fade-in-up">
+      <span class="chip">Technology Stack</span>
+      <h2 class="sec-heading" id="tech-heading">Built on a <span class="grad-bp">world-class stack</span></h2>
+      <p class="sec-sub">Enterprise-proven technologies chosen for reliability, scalability, and developer experience.</p>
+    </div>
+    <div class="tech-grid">
+      @for (t of techs; track t.name; let i = $index) {
+        <div class="tech-card fade-in-up" (mouseenter)="hovered.set(i)" (mouseleave)="hovered.set(-1)" [style.--tc]="t.color" role="img" [attr.aria-label]="t.name">
+          <div class="tc-glow" [style.background]="t.bg"></div>
+          <div class="tc-abbr" [style.background]="t.bg">{{ t.abbr }}</div>
+          <div class="tc-name">{{ t.name }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

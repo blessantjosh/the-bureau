@@ -1,0 +1,456 @@
+/* ============================================================
+   app.scss — Clinical AI Platform Shell Component
+   Extends global styles.scss design system (no overrides).
+   ============================================================ */
+
+/* ── App Shell Layout ─────────────────────────────────────── */
+
+.app-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+
+.sidebar {
+  position: relative;
+  z-index: 10;
+  width: var(--sidebar-w, 260px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 20px 12px;
+  border-right: 1px solid var(--border);
+  background: var(--bg-panel);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  transition: transform 0.32s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* ── Sidebar Logo ─────────────────────────────────────────── */
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 12px;
+  flex-shrink: 0;
+}
+
+.sidebar-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.sidebar-logo-title {
+  display: block;
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sidebar-logo-sub {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Sidebar Utilities ────────────────────────────────────── */
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 12px 6px;
+  flex-shrink: 0;
+}
+
+.sidebar-spacer {
+  flex: 1;
+  min-height: 16px;
+}
+
+/* ── Nav ──────────────────────────────────────────────────── */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.15s ease;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--bg-glass-hover);
+    color: var(--text);
+    transform: translateX(2px);
+
+    .nav-item-icon {
+      color: var(--accent);
+    }
+  }
+
+  &.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+
+    .nav-item-icon {
+      color: var(--accent);
+    }
+
+    .nav-item-indicator {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+}
+
+.nav-item-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.18s ease;
+  color: inherit;
+}
+
+.nav-item-label {
+  flex: 1;
+  letter-spacing: -0.01em;
+}
+
+.nav-item-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-item-indicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  border-radius: 2px 0 0 2px;
+  background: var(--accent);
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    transform 0.2s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
+}
+
+/* ── Sidebar Footer ───────────────────────────────────────── */
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 8px 4px;
+  flex-shrink: 0;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  padding: 5px 10px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .status-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.offline {
+    .status-dot {
+      background: var(--error, #ef4444);
+      box-shadow: 0 0 6px var(--error, #ef4444);
+    }
+  }
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success, #10b981);
+  box-shadow: 0 0 6px var(--success, #10b981);
+  flex-shrink: 0;
+  animation: statusPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.theme-toggle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-glass);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background: var(--bg-glass-hover);
+    color: var(--text);
+    border-color: var(--border-bright);
+    transform: rotate(15deg) scale(1.05);
+  }
+}
+
+/* ── Main Content ─────────────────────────────────────────── */
+
+.main-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-bright);
+    border-radius: 4px;
+  }
+}
+
+/* ── Mobile Menu Button ───────────────────────────────────── */
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  color: var(--text);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.15s ease;
+
+  &:hover {
+    background: var(--bg-glass-hover);
+    transform: scale(1.05);
+  }
+}
+
+/* ── Sidebar Backdrop (mobile) ────────────────────────────── */
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ── Dynamic Island — clinical overrides ─────────────────── */
+
+.island-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.island-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.island-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.dot-online {
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+    animation: statusPulse 2.4s ease-in-out infinite;
+  }
+
+  &.dot-offline {
+    background: #ef4444;
+    box-shadow: 0 0 6px #ef4444;
+  }
+}
+
+/* ── Splash — clinical branding ──────────────────────────── */
+
+.splash-logo {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Mobile Responsive ────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .sidebar-backdrop {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 100;
+
+    &.open {
+      transform: translateX(0);
+      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .main-content {
+    padding-top: 64px;
+  }
+}
+
+/* ── View Transitions ─────────────────────────────────────── */
+
+:root {
+  view-transition-name: none;
+}
+
+::view-transition-old(root) {
+  animation: 180ms ease-out both fadeSlideOut;
+}
+
+::view-transition-new(root) {
+  animation: 220ms ease-in both fadeSlideIn;
+}
+
+@keyframes fadeSlideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

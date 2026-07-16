@@ -1,0 +1,61 @@
+<section class="arch section-py" id="architecture" aria-labelledby="arch-heading">
+  <div class="container">
+    <div class="arch-intro fade-in-up">
+      <span class="chip">Platform Architecture</span>
+      <h2 class="sec-heading" id="arch-heading">
+        Production-ready from<br><span class="grad-bp">infrastructure to intelligence</span>
+      </h2>
+      <p class="sec-sub">Every layer purpose-built for enterprise scale, reliability, and observability.</p>
+    </div>
+
+    <div class="arch-layout">
+      <div class="arch-flow" role="list" aria-label="Technology stack">
+        @for (node of nodes; track node.label; let i = $index; let last = $last) {
+          <div class="arch-node fade-in-up" role="listitem" [style.--nc]="node.color">
+            <div class="node-wrap">
+              <div class="node-icon" [style.background]="node.grad" aria-hidden="true">{{ node.icon }}</div>
+              <div class="node-info">
+                <span class="node-label">{{ node.label }}</span>
+                <span class="node-sub">{{ node.sub }}</span>
+              </div>
+              <div class="node-ping" aria-hidden="true"></div>
+            </div>
+            @if (!last) {
+              <div class="node-connector" aria-hidden="true">
+                <div class="connector-fill"></div>
+                <div class="connector-flow"></div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="arch-panel" aria-label="Live system metrics">
+        <div class="panel-header">
+          <span class="live-ind"><span class="live-dot"></span>Live Metrics</span>
+        </div>
+        <div class="panel-metrics">
+          @for (m of metrics; track m.label) {
+            <div class="pm-row">
+              <span class="pm-label">{{ m.label }}</span>
+              <span class="pm-val" [style.color]="m.color">{{ m.value }}</span>
+            </div>
+          }
+        </div>
+        <div class="panel-chart" aria-label="Performance trend chart">
+          <svg viewBox="0 0 220 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3B82F6" stop-opacity=".45"/>
+                <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 52 Q22 42 44 30 Q66 18 88 24 Q110 30 132 14 Q154 4 176 9 Q198 14 220 4" fill="none" stroke="#3B82F6" stroke-width="2"/>
+            <path d="M0 52 Q22 42 44 30 Q66 18 88 24 Q110 30 132 14 Q154 4 176 9 Q198 14 220 4 L220 64 L0 64Z" fill="url(#cg)"/>
+          </svg>
+        </div>
+        <div class="panel-footer">System health: <span style="color:#10B981;font-weight:700">Excellent</span></div>
+      </div>
+    </div>
+  </div>
+</section>

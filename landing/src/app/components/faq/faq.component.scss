@@ -1,0 +1,43 @@
+.faq { background: var(--bg-primary); }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+.section-py { padding: 120px 0; }
+.faq-intro { text-align:center;margin-bottom:52px; }
+.chip { display:inline-flex;align-items:center;gap:7px;padding:5px 15px;border-radius:9999px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.28);font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:22px; }
+.sec-heading { font-size:clamp(2rem,4vw,3.25rem);font-weight:800;line-height:1.14;letter-spacing:-.025em;color:#F8FAFC;margin-bottom:18px; }
+.grad-bp { background:linear-gradient(135deg,#60A5FA,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.sec-sub { font-size:1.05rem;color:#94A3B8;max-width:460px;line-height:1.76;margin:0 auto; }
+
+.faq-list { display:flex;flex-direction:column;gap:10px; }
+
+.faq-item {
+  background:rgba(255,255,255,.028);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  overflow:hidden;
+  transition:border-color .3s;
+  &.open { border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.04); }
+}
+
+.faq-q {
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 22px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;
+  span{font-size:.92rem;font-weight:600;color:#F8FAFC;line-height:1.45;}
+}
+
+.faq-icon {
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  display:flex;align-items:center;justify-content:center;color:#94A3B8;
+  transition:background .25s,color .25s;
+  .faq-item.open & { background:rgba(59,130,246,.15);color:#60A5FA;border-color:rgba(59,130,246,.3); }
+}
+
+.faq-a {
+  padding:0 22px 20px;
+  animation:expandIn .3s ease;
+  p{font-size:.88rem;color:#94A3B8;line-height:1.75;}
+}
+
+.fade-in-up { opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;&.visible{opacity:1;transform:translateY(0);} }
+
+@keyframes expandIn { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:translateY(0);} }

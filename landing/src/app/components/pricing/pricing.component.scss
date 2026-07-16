@@ -1,0 +1,70 @@
+.pricing { background: linear-gradient(180deg,var(--bg-primary) 0%, #0B1120 50%,var(--bg-primary) 100%); }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.section-py { padding: 120px 0; }
+.pricing-intro { text-align:center;margin-bottom:52px; }
+.chip { display:inline-flex;align-items:center;gap:7px;padding:5px 15px;border-radius:9999px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.28);font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:22px; }
+.sec-heading { font-size:clamp(2rem,4vw,3.25rem);font-weight:800;line-height:1.14;letter-spacing:-.025em;color:#F8FAFC;margin-bottom:18px; }
+.grad-bp { background:linear-gradient(135deg,#60A5FA,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.sec-sub { font-size:1.05rem;color:#94A3B8;max-width:480px;line-height:1.76;margin:0 auto 28px; }
+
+.billing-toggle { display:inline-flex;align-items:center;gap:12px;padding:6px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9999px; }
+
+.toggle-opt { background:none;border:none;color:#64748B;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:4px 8px;border-radius:9999px;transition:color .2s;&.active{color:#F8FAFC;} }
+
+.toggle-switch { width:42px;height:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:11px;cursor:pointer;position:relative;flex-shrink:0; }
+.toggle-knob { width:16px;height:16px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;position:absolute;top:2px;left:2px;transition:left .28s cubic-bezier(.34,1.56,.64,1); &.right{left:22px;} }
+
+.save-badge { font-size:.65rem;background:linear-gradient(135deg,#10B981,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;margin-left:4px; }
+
+.pricing-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start; @media(max-width:900px){grid-template-columns:1fr;max-width:480px;margin:0 auto;} }
+
+.plan-card {
+  position:relative;
+  background:rgba(255,255,255,.028);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:22px;
+  padding:32px;
+  transition:all .3s;
+  &:hover:not(.popular){box-shadow:0 16px 48px rgba(0,0,0,.22);transform:translateY(-3px);}
+  &.popular{
+    background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.35);
+    box-shadow:0 0 40px rgba(139,92,246,.12),0 20px 60px rgba(0,0,0,.3);
+    transform:scale(1.04);
+    @media(max-width:900px){transform:none;}
+  }
+}
+
+.popular-badge {
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  padding:4px 18px;border-radius:9999px;
+  background:linear-gradient(135deg,#8B5CF6,#3B82F6);
+  font-size:.72rem;font-weight:700;color:#fff;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(139,92,246,.5);
+}
+
+.plan-head { margin-bottom:22px; }
+.plan-name { font-size:1.15rem;font-weight:800;color:#F8FAFC;margin-bottom:5px; }
+.plan-desc { font-size:.8rem;color:#64748B;line-height:1.55; }
+
+.plan-price { display:flex;align-items:baseline;gap:4px;margin-bottom:4px; }
+.price-val { font-size:2.6rem;font-weight:900;letter-spacing:-.035em;color:#F8FAFC; }
+.price-per { font-size:.85rem;color:#64748B; }
+.price-note { font-size:.74rem;color:#10B981;margin-bottom:22px; }
+
+.feat-list {
+  list-style:none;padding:0;margin:22px 0;display:flex;flex-direction:column;gap:9px;
+  li{display:flex;align-items:center;gap:9px;font-size:.84rem;color:#94A3B8;}
+  svg{color:var(--pc,#3B82F6);flex-shrink:0;}
+}
+
+.plan-cta {
+  width:100%;padding:13px 0;border-radius:9999px;font-size:.9rem;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .25s;
+  background:rgba(255,255,255,.05);border:1px solid var(--pc,#3B82F6);color:#F8FAFC;
+  &:hover{background:rgba(255,255,255,.09);transform:translateY(-1px);}
+  &.cta-primary{background:linear-gradient(135deg,#8B5CF6,#3B82F6);border:none;box-shadow:0 4px 20px rgba(139,92,246,.4);&:hover{box-shadow:0 8px 32px rgba(139,92,246,.6);}}
+}
+
+.pricing-note { text-align:center;margin-top:32px;font-size:.82rem;color:#475569; }
+
+.fade-in-up { opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease;&.visible{opacity:1;transform:translateY(0);} }

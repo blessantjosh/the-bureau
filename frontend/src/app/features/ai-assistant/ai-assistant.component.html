@@ -1,0 +1,206 @@
+<div class="ai-assistant-layout">
+
+  <!-- LEFT PANEL: Agent Selector -->
+  <aside class="agent-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2zM5 14v2a7 7 0 0 0 14 0v-2H5z"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="sidebar-title">Clinical Agents</h2>
+        <p class="sidebar-subtitle">Select AI specialist</p>
+      </div>
+    </div>
+
+    <nav class="agent-list">
+      <button
+        *ngFor="let agent of agents"
+        class="agent-card"
+        [class.active]="agent.id === activeAgentId"
+        [style.--agent-accent]="agent.accent"
+        (click)="selectAgent(agent.id)"
+      >
+        <div class="agent-tag" [style.background]="agent.accent + '22'" [style.color]="agent.accent">
+          {{ agent.tag }}
+        </div>
+        <div class="agent-card-body">
+          <span class="agent-name">{{ agent.name }}</span>
+          <span class="agent-role">{{ agent.role }}</span>
+          <span class="agent-tagline">{{ agent.tagline }}</span>
+        </div>
+        <div class="agent-msg-count" *ngIf="messages | messageCount:agent.id as count">
+          <span *ngIf="count > 0" class="count-badge">{{ count }}</span>
+        </div>
+        <div class="active-indicator" *ngIf="agent.id === activeAgentId"></div>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="model-badge">
+        <span class="model-dot"></span>
+        <span>Gemini 2.0 Flash</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT PANEL: Chat Interface -->
+  <main class="chat-panel" [style.--active-accent]="activeAgent?.accent">
+
+    <!-- Chat Header -->
+    <header class="chat-header">
+      <div class="chat-agent-info">
+        <div class="chat-agent-tag"
+             [style.background]="activeAgent?.accent + '22'"
+             [style.color]="activeAgent?.accent"
+             [style.border-color]="activeAgent?.accent + '44'">
+          {{ activeAgent?.tag }}
+        </div>
+        <div class="chat-agent-meta">
+          <h3 class="chat-agent-name">{{ activeAgent?.name }}</h3>
+          <p class="chat-agent-desc">{{ activeAgent?.description }}</p>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <div class="online-pill">
+          <span class="online-dot"></span>
+          <span>Online</span>
+        </div>
+        <button class="btn-ghost" (click)="clearMessages()" title="Clear conversation">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6"/>
+          </svg>
+          Clear
+        </button>
+      </div>
+    </header>
+
+    <!-- Transcript -->
+    <section class="transcript" id="aiTranscript">
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="activeMessages.length === 0 && !sending">
+        <div class="empty-orb" [style.background]="'radial-gradient(circle, ' + activeAgent?.accent + '33, transparent)'">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" [style.color]="activeAgent?.accent">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <h4 class="empty-title">{{ activeAgent?.name }}</h4>
+        <p class="empty-desc">{{ activeAgent?.tagline }}</p>
+        <div class="prompt-chips">
+          <span class="prompt-chip" *ngIf="activeAgentId === 'clinical-decision'"
+            (click)="composerText = 'Patient presents with chest pain, dyspnea, and elevated troponin. Generate differential diagnosis.'">
+            Chest pain differential
+          </span>
+          <span class="prompt-chip" *ngIf="activeAgentId === 'evidence-retrieval'"
+            (click)="composerText = 'Summarize latest evidence on SGLT2 inhibitors in heart failure with reduced ejection fraction.'">
+            SGLT2 inhibitor evidence
+          </span>
+          <span class="prompt-chip" *ngIf="activeAgentId === 'drug-safety'"
+            (click)="composerText = 'Check interactions between warfarin, amiodarone, and metformin.'">
+            Drug interaction check
+          </span>
+          <span class="prompt-chip" *ngIf="activeAgentId === 'patient-summary'"
+            (click)="composerText = 'Generate a structured SOAP note for a diabetic patient with recent HbA1c of 8.2%.'">
+            Diabetic SOAP note
+          </span>
+          <span class="prompt-chip" *ngIf="activeAgentId === 'research-assistant'"
+            (click)="composerText = 'Find clinical trials for stage III melanoma patients eligible for immunotherapy.'">
+            Melanoma trials search
+          </span>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-container" *ngIf="activeMessages.length > 0 || sending">
+        <div
+          *ngFor="let msg of activeMessages"
+          class="message-wrapper"
+          [class.user-wrapper]="msg.role === 'user'"
+          [class.assistant-wrapper]="msg.role === 'assistant'"
+        >
+          <!-- Assistant Avatar -->
+          <div class="msg-avatar assistant-avatar"
+               *ngIf="msg.role === 'assistant'"
+               [style.background]="activeAgent?.accent + '22'"
+               [style.color]="activeAgent?.accent"
+               [style.border-color]="activeAgent?.accent + '44'">
+            {{ activeAgent?.tag }}
+          </div>
+
+          <!-- Bubble -->
+          <div class="message-bubble"
+               [class.user-bubble]="msg.role === 'user'"
+               [class.assistant-bubble]="msg.role === 'assistant'"
+               [class.error-bubble]="msg.error">
+            <div class="bubble-content" [innerHTML]="formatMessage(msg.content)"></div>
+            <div class="bubble-footer">
+              <span class="msg-time">{{ formatTime(msg.timestamp) }}</span>
+              <span class="error-tag" *ngIf="msg.error">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Error
+              </span>
+            </div>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="msg-avatar user-avatar" *ngIf="msg.role === 'user'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="message-wrapper assistant-wrapper" *ngIf="sending">
+          <div class="msg-avatar assistant-avatar"
+               [style.background]="activeAgent?.accent + '22'"
+               [style.color]="activeAgent?.accent"
+               [style.border-color]="activeAgent?.accent + '44'">
+            {{ activeAgent?.tag }}
+          </div>
+          <div class="message-bubble assistant-bubble typing-bubble">
+            <div class="typing-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Composer -->
+    <footer class="composer">
+      <div class="composer-inner" [class.focused]="composerText.length > 0">
+        <textarea
+          class="composer-input"
+          [(ngModel)]="composerText"
+          (keydown)="handleKeyDown($event)"
+          placeholder="Ask {{ activeAgent?.name }}..."
+          rows="1"
+          [disabled]="sending"
+        ></textarea>
+        <div class="composer-actions">
+          <span class="hint-text">Shift+Enter for new line</span>
+          <button
+            class="send-btn"
+            (click)="sendMessage()"
+            [disabled]="!composerText.trim() || sending"
+            [style.background]="activeAgent?.accent"
+          >
+            <svg *ngIf="!sending" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            <span *ngIf="sending" class="spinner"></span>
+          </button>
+        </div>
+      </div>
+      <p class="composer-disclaimer">Clinical AI outputs are for decision support only. Always apply clinical judgment.</p>
+    </footer>
+
+  </main>
+</div>

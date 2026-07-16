@@ -1,0 +1,37 @@
+<section class="features section-py" id="features" aria-labelledby="feat-heading">
+  <div class="container">
+    <div class="features-intro fade-in-up">
+      <span class="chip">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Platform Capabilities
+      </span>
+      <h2 class="sec-heading" id="feat-heading">
+        Everything you need to<br>
+        <span class="grad-bp">build with AI at scale</span>
+      </h2>
+      <p class="sec-sub">
+        A complete enterprise AI stack — from document ingestion to autonomous decision-making — production-ready from day one.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      @for (f of features; track f.title; let i = $index) {
+        <article class="feat-card fade-in-up tilt-card" [attr.aria-label]="f.title">
+          <div class="card-glow" [style.background]="f.gradient"></div>
+          <div class="card-icon" [style.background]="f.gradient" [innerHTML]="icons[i]" aria-hidden="true"></div>
+          <h3 class="card-title">{{ f.title }}</h3>
+          <p class="card-desc">{{ f.desc }}</p>
+          <div class="card-tags">
+            @for (t of f.tags; track t) {
+              <span class="tag">{{ t }}</span>
+            }
+          </div>
+          <div class="card-stat">
+            <span class="stat-num" [style.background]="f.gradient" style="-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{{ f.stat }}</span>
+            <span class="stat-desc">{{ f.statLabel }}</span>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

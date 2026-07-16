@@ -1,0 +1,156 @@
+<div class="feature-page">
+
+  <!-- Clinical Header -->
+  <div class="page-header">
+    <div class="page-header-content">
+      <div class="page-header-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="page-title">Clinical Workspace Terminal</h1>
+        <p class="page-subtitle">{{ today }} — Decision-Support and Automated Verification Trace</p>
+      </div>
+    </div>
+    
+    <div class="pipeline-status-badge" *ngIf="isProcessing || runCompleted">
+      <span class="status-dot" [class.pulse]="isProcessing" [class.success]="runCompleted"></span>
+      <span class="status-label">{{ isProcessing ? 'Auditing reasoning sequence...' : 'Trace verification complete' }}</span>
+    </div>
+  </div>
+
+  <!-- PRIMARY ANCHOR: Vitals Monitor Trace (Horizontal SVG Flow) -->
+  <app-pipeline-flow 
+    [agents]="agentsState"
+    [auditResult]="auditResult"
+  ></app-pipeline-flow>
+
+  <!-- Workspace Terminal Columns -->
+  <div class="workspace-layout">
+    
+    <!-- LEFT PANEL: Case Setup & Notes Entry -->
+    <div class="left-panel">
+      <div class="work-card">
+        <h3 class="panel-section-title">Case Configuration</h3>
+        
+        <div class="form-group">
+          <label class="form-label" for="patientSelect">Active Patient Profile</label>
+          <div class="select-wrapper">
+            <select 
+              id="patientSelect" 
+              class="form-select" 
+              [(ngModel)]="selectedPatientId" 
+              (change)="loadPatientTemplate(selectedPatientId)"
+              [disabled]="isProcessing"
+            >
+              <option *ngFor="let p of patientTemplates" [value]="p.id">
+                {{ p.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quick Load Case Note</label>
+          <div class="template-chips">
+            <button 
+              *ngFor="let t of patientTemplates"
+              class="template-chip"
+              [class.active]="selectedPatientId === t.id"
+              (click)="loadPatientTemplate(t.id)"
+              [disabled]="isProcessing"
+            >
+              {{ t.id }} Case Note
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="encounterNote">Encounter Transcription / Clinical History</label>
+          <textarea
+            id="encounterNote"
+            class="note-textarea"
+            rows="11"
+            [(ngModel)]="encounterNote"
+            placeholder="Document symptoms, medical history, active medications, and therapy choices here. Run audit to verify clinical paths..."
+            [disabled]="isProcessing"
+          ></textarea>
+        </div>
+
+        <div class="action-footer">
+          <button 
+            class="btn-run-audit" 
+            [disabled]="isProcessing || !encounterNote.trim()"
+            (click)="runClinicalAudit()"
+          >
+            <span class="btn-content" *ngIf="!isProcessing">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Execute Verification Audit
+            </span>
+            <span class="btn-content" *ngIf="isProcessing">
+              <div class="btn-spinner"></div>
+              Processing: {{ activeAgentName || 'Initializing agents...' }}
+            </span>
+          </button>
+        </div>
+
+        <div class="error-banner" *ngIf="errorMessage">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {{ errorMessage }}
+        </div>
+      </div>
+
+      <!-- Infrastructure Integration Panel -->
+      <div class="work-card status-card">
+        <h4 class="panel-section-title status-title">Clinical Engine Latency</h4>
+        <div class="status-grid">
+          <div class="status-item" *ngFor="let s of systemStatus">
+            <span class="status-dot"></span>
+            <span class="status-name">{{ s.name }}</span>
+            <span class="status-latency">{{ s.latency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Consistency Auditor Output Readout -->
+    <div class="right-panel">
+
+      <!-- Default Awaiting State -->
+      <div class="placeholder-card" *ngIf="!isProcessing && !runCompleted">
+        <div class="placeholder-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h3 class="placeholder-heading">Awaiting Decision Verification</h3>
+        <p class="placeholder-body">
+          Enter clinical notes or select a patient template in the control panel, then execute the verification audit.
+          The multi-agent graph will process clinical guidelines, analyze drug safety, rank evidence, and render results on the trace monitor above.
+        </p>
+      </div>
+
+      <!-- Consistency Auditor Report (Readout Card) -->
+      <div class="results-container" *ngIf="isProcessing || runCompleted">
+        <app-trust-score-card 
+          *ngIf="runCompleted && auditResult" 
+          [auditResult]="auditResult"
+        ></app-trust-score-card>
+
+        <div class="trace-prompt-info" *ngIf="isProcessing">
+          <div class="terminal-loader">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <p class="loader-text">Compiling multi-agent trace records and consistency metrics...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

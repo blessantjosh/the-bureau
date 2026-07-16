@@ -1,0 +1,238 @@
+<!-- ═══════════════════════════════════════════════════════
+     AMBIENT BACKGROUND
+     ═══════════════════════════════════════════════════════ -->
+<div class="ambient" aria-hidden="true">
+  <canvas id="particleCanvas"></canvas>
+  <div class="gradient-orb orb-1"></div>
+  <div class="gradient-orb orb-2"></div>
+  <div class="gradient-orb orb-3"></div>
+  <div class="noise-overlay"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SPLASH SCREEN
+     ═══════════════════════════════════════════════════════ -->
+<div id="splash" class="splash">
+  <div class="splash-inner">
+    <div class="splash-logo">
+      <!-- Medical cross SVG -->
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="4" width="10" height="32" rx="3" fill="currentColor"/>
+        <rect x="4" y="15" width="32" height="10" rx="3" fill="currentColor"/>
+      </svg>
+    </div>
+    <p class="splash-label">Clinical AI Platform</p>
+    <div class="splash-bar"><span></span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     DYNAMIC ISLAND
+     ═══════════════════════════════════════════════════════ -->
+<div
+  id="dynamicIsland"
+  class="dynamic-island"
+  [class.compact]="islandState === 'compact'"
+  [class.expanded]="islandState === 'expanded' || islandState === 'thinking'"
+  [class.thinking]="islandState === 'thinking'"
+  [class.alert-success]="healthOk && islandState !== 'boot'"
+  [class.alert-error]="!healthOk && islandState !== 'boot'"
+  (click)="toggleIsland()"
+  role="status"
+  [attr.aria-label]="islandStatus"
+>
+  <div class="island-glow"></div>
+  <div class="island-inner">
+    <!-- Compact -->
+    <div class="island-compact" *ngIf="islandState === 'compact'">
+      <span class="island-dot" [class.dot-online]="healthOk" [class.dot-offline]="!healthOk"></span>
+      <span class="island-status-text">{{ islandStatus }}</span>
+    </div>
+
+    <!-- Expanded / Boot -->
+    <div class="island-expanded" *ngIf="islandState !== 'compact'">
+      <div class="island-avatar">
+        <!-- Medical cross icon -->
+        <svg width="18" height="18" viewBox="0 0 40 40" fill="none">
+          <rect x="15" y="4" width="10" height="32" rx="3" fill="currentColor"/>
+          <rect x="4" y="15" width="32" height="10" rx="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="island-meta">
+        <p class="island-agent-name">Clinical AI</p>
+        <p class="island-agent-role">{{ islandStatus }}</p>
+      </div>
+      <div class="island-wave" *ngIf="islandState === 'thinking'" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="island-status-badge" *ngIf="islandState !== 'thinking'">
+        <span class="island-dot" [class.dot-online]="healthOk" [class.dot-offline]="!healthOk"></span>
+        <span>{{ healthOk ? 'Online' : 'Offline' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MOBILE HAMBURGER
+     ═══════════════════════════════════════════════════════ -->
+<button
+  class="mobile-menu-btn"
+  (click)="toggleSidebar()"
+  aria-label="Toggle navigation"
+  [attr.aria-expanded]="sidebarOpen"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <path *ngIf="!sidebarOpen" d="M4 6H20M4 12H20M4 18H14"/>
+    <path *ngIf="sidebarOpen"  d="M18 6L6 18M6 6l12 12"/>
+  </svg>
+</button>
+
+<!-- ═══════════════════════════════════════════════════════
+     APP SHELL
+     ═══════════════════════════════════════════════════════ -->
+<div class="app-shell">
+
+  <!-- ─── SIDEBAR ─────────────────────────────────────────── -->
+  <aside class="sidebar glass" [class.open]="sidebarOpen" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
+          <rect x="15" y="4" width="10" height="32" rx="3" fill="currentColor"/>
+          <rect x="4" y="15" width="32" height="10" rx="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="sidebar-logo-text">
+        <span class="sidebar-logo-title">Clinical AI</span>
+        <span class="sidebar-logo-sub">Platform</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="sidebar-divider"></div>
+
+    <!-- Nav Section Label -->
+    <div class="sidebar-section-label">Navigation</div>
+
+    <!-- Nav Items -->
+    <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+      <a
+        *ngFor="let item of navItems"
+        class="nav-item"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }"
+        (click)="closeSidebar()"
+        [attr.aria-label]="item.label"
+      >
+        <!-- Icon -->
+        <span class="nav-item-icon" aria-hidden="true">
+
+          <!-- grid -->
+          <svg *ngIf="item.icon === 'grid'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+
+          <!-- users -->
+          <svg *ngIf="item.icon === 'users'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+
+          <!-- file-text -->
+          <svg *ngIf="item.icon === 'file-text'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+
+          <!-- cpu -->
+          <svg *ngIf="item.icon === 'cpu'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <rect x="9" y="9" width="6" height="6"/>
+            <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+            <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+            <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+            <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+          </svg>
+
+          <!-- book-open -->
+          <svg *ngIf="item.icon === 'book-open'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+
+          <!-- bar-chart -->
+          <svg *ngIf="item.icon === 'bar-chart'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6"  y1="20" x2="6"  y2="14"/>
+            <line x1="2"  y1="20" x2="22" y2="20"/>
+          </svg>
+
+        </span>
+
+        <!-- Label -->
+        <span class="nav-item-label">{{ item.label }}</span>
+
+        <!-- Badge -->
+        <span *ngIf="item.badge" class="nav-item-badge">{{ item.badge }}</span>
+
+        <!-- Active indicator bar -->
+        <span class="nav-item-indicator" aria-hidden="true"></span>
+      </a>
+    </nav>
+
+    <!-- Spacer -->
+    <div class="sidebar-spacer"></div>
+
+    <!-- Divider -->
+    <div class="sidebar-divider"></div>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <!-- System Status -->
+      <div class="status-pill" [class.offline]="!healthOk">
+        <span class="status-dot"></span>
+        <span class="status-label">{{ healthOk ? 'System Online' : 'Backend Offline' }}</span>
+      </div>
+
+      <!-- Theme Toggle -->
+      <button class="theme-toggle-btn" (click)="toggleTheme()" [title]="'Switch to ' + (currentTheme === 'dark' ? 'light' : 'dark') + ' mode'" aria-label="Toggle theme">
+        <!-- Sun (shown in dark mode) -->
+        <svg *ngIf="currentTheme === 'dark'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <!-- Moon (shown in light mode) -->
+        <svg *ngIf="currentTheme === 'light'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Mobile sidebar backdrop -->
+  <div
+    class="sidebar-backdrop"
+    [class.open]="sidebarOpen"
+    (click)="closeSidebar()"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ─── MAIN CONTENT ──────────────────────────────────────── -->
+  <main class="main-content" id="main-content" role="main">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

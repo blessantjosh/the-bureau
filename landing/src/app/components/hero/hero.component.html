@@ -1,0 +1,125 @@
+<section class="hero" id="hero">
+  <canvas #heroCanvas class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-bg" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <div class="hero-content" [class.visible]="visible()">
+    <div class="hero-badge">
+      <span class="badge-pulse"></span>
+      Now in Beta &mdash; Join 500+ enterprises
+    </div>
+
+    <h1 class="hero-h1">
+      The Future of<br>
+      <span class="grad-text">Enterprise AI</span><br>
+      Starts Here
+    </h1>
+
+    <div class="typewriter-row">
+      <span class="tw-prefix">Powering</span>
+      <span #typeEl class="tw-text"></span>
+      <span class="tw-cursor" aria-hidden="true">|</span>
+    </div>
+
+    <p class="hero-desc">
+      NeuralOS delivers production-ready autonomous AI agents, intelligent document processing,
+      and real-time decision intelligence for the modern enterprise.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary btn-magnetic" (click)="scrollDown()" aria-label="Start building with NeuralOS">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        Start Building Free
+      </button>
+      <button class="btn-outline" aria-label="Watch product demo">
+        <div class="play-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+        Watch Demo
+      </button>
+    </div>
+
+    <div class="social-proof">
+      <div class="avatars" aria-label="Trusted by 500+ teams">
+        @for (i of [1,2,3,4,5]; track i) {
+          <div class="avatar" [style.background]="'linear-gradient(135deg,hsl(' + (i*55) + ',70%,55%),hsl(' + (i*55+40) + ',70%,65%))'">{{ i }}</div>
+        }
+      </div>
+      <div class="proof-copy">
+        <div class="stars" aria-label="5 star rating">
+          @for (s of [1,2,3,4,5]; track s) {
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#F59E0B" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          }
+        </div>
+        <span>Trusted by <strong>500+ enterprise teams</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual" [class.visible]="visible()" aria-hidden="true">
+    <div class="hero-card tilt-card">
+      <div class="card-bar">
+        <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <span class="bar-title">NeuralOS Live Dashboard</span>
+        <div class="live-badge"><span class="live-dot"></span>Live</div>
+      </div>
+      <div class="card-body">
+        <div class="stats-row">
+          @for (stat of [{v:'99.2%',l:'Accuracy',c:'#60A5FA'},{v:'142ms',l:'Latency',c:'#34D399'},{v:'2.4M',l:'Tokens/s',c:'#A78BFA'}]; track stat.l) {
+            <div class="stat-pill">
+              <div class="stat-val" [style.color]="stat.c">{{ stat.v }}</div>
+              <div class="stat-lbl">{{ stat.l }}</div>
+            </div>
+          }
+        </div>
+        <div class="pipeline-section">
+          <div class="pip-label">Active Pipeline</div>
+          <div class="pip-track">
+            @for (node of pipelineNodes; track node; let i = $index) {
+              <div class="pip-node" [style.animation-delay]="(i * 0.15) + 's'">
+                <div class="pip-dot" [style.background]="nodeColors[i]" [style.box-shadow]="'0 0 8px ' + nodeColors[i]"></div>
+                <span>{{ node }}</span>
+              </div>
+              @if (i < 4) {
+                <div class="pip-line"><div class="pip-flow"></div></div>
+              }
+            }
+          </div>
+        </div>
+        <div class="decisions-feed">
+          <div class="feed-head">Live Decisions</div>
+          @for (d of [{dot:'approve',txt:'Claim #8821',res:'APPROVED',t:'2s'},{dot:'escalate',txt:'Contract #4401',res:'ESCALATED',t:'9s'},{dot:'reject',txt:'Invoice #9910',res:'REJECTED',t:'17s'}]; track d.txt) {
+            <div class="feed-row">
+              <span class="fdot" [class]="d.dot"></span>
+              {{ d.txt }} &mdash; <strong>{{ d.res }}</strong>
+              <span class="ftime">{{ d.t }} ago</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="float-chip chip-a">
+      <svg width="14" height="14" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2" fill="none"><path d="M20 6L9 17l-5-5"/></svg>
+      99.9% Uptime SLA
+    </div>
+    <div class="float-chip chip-b">
+      <span class="chip-dot" style="background:#3B82F6"></span>
+      Live AI Processing
+    </div>
+    <div class="float-chip chip-c">
+      <span style="color:#A78BFA;font-weight:800">2.4M</span>&nbsp;tokens/sec
+    </div>
+  </div>
+
+  <button class="scroll-cue" (click)="scrollDown()" aria-label="Scroll down">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Explore</span>
+  </button>
+</section>

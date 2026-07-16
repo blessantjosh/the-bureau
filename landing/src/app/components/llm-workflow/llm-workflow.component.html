@@ -1,0 +1,35 @@
+<section class="llm-workflow section-py">
+  <div class="container">
+    <h3>Like-LLM Console</h3>
+    <p class="muted">Quick orchestration UI: choose retrieval sources and ask a question.</p>
+
+    <div class="form">
+      <textarea rows="4" [(ngModel)]="query()" placeholder="Enter a question or instruction..."></textarea>
+
+      <div class="source-toggles">
+        <label><input type="checkbox" [checked]="sources().qdrant" (change)="sources().qdrant = !sources().qdrant"/> Qdrant (vector)</label>
+        <label><input type="checkbox" [checked]="sources().elastic" (change)="sources().elastic = !sources().elastic"/> ElasticSearch (keyword)</label>
+        <label><input type="checkbox" [checked]="sources().postgres" (change)="sources().postgres = !sources().postgres"/> Postgres (structured)</label>
+      </div>
+
+      <div class="actions">
+        <button (click)="submit()" [disabled]="loading()">{{ loading() ? 'Running…' : 'Run Query' }}</button>
+      </div>
+    </div>
+
+    <div class="results" *ngIf="results">
+      <h4>Retrieved Contexts</h4>
+      <ul>
+        <li *ngFor="let r of results.retrieved"> <strong>[{{ r.source }}]</strong> {{ r.text | slice:0:240 }}{{ r.text.length > 240 ? '…' : '' }} <span class="score">({{ r.score | number:'1.2-3' }})</span></li>
+      </ul>
+
+      <h4>LLM Response</h4>
+      <pre class="llm-response">{{ results.llm }}</pre>
+
+      <div class="debug" *ngIf="results.error">
+        <h5>Error</h5>
+        <pre>{{ results.error }}</pre>
+      </div>
+    </div>
+  </div>
+</section>

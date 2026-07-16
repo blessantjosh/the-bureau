@@ -1,0 +1,10 @@
+.llm-workflow { 
+  .form { 
+    textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 14px; }
+    .source-toggles { display:flex; gap:12px; margin-top:8px; }
+    .actions { margin-top:12px; }
+    button { background:#2563eb; color:white; border:none; padding:8px 14px; border-radius:6px; }
+  }
+
+  .results { margin-top:18px; .llm-response{ background:#0f172a; color:#e6eef8; padding:12px; border-radius:6px; white-space:pre-wrap } }
+}

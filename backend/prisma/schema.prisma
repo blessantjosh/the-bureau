@@ -1,0 +1,288 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Agent {
+  id        String    @id
+  name      String
+  role      String
+  tagline   String
+  accent    String
+  tag       String
+  messages  Message[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  agentId   String
+  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  role      String   // 'user' or 'assistant'
+  content   String   @db.Text
+  error     Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  filename     String
+  originalName String
+  path         String
+  size         Int
+  mimetype     String
+  createdAt    DateTime @default(now())
+}
+
+// ============================================================
+// COMPLIANCE AGENT MODELS
+// ============================================================
+
+model ComplianceDecision {
+  id                   String   @id @default(uuid())
+  documentId           String   @unique
+  documentType         String   @default("claim") // 'claim', 'policy', 'contract'
+
+  // Core Decision
+  decision             String?  // 'APPROVE', 'REJECT', 'ESCALATE'
+  riskScore            Float    @default(0.0)
+  reasoning            String?  @db.Text
+  confidenceScore      Float    @default(0.0)
+
+  // Status
+  status               String   @default("PROCESSING") // 'PROCESSING', 'COMPLETED', 'ESCALATED', 'FAILED'
+  createdAt            DateTime @default(now())
+  completedAt          DateTime?
+  processingDurationMs Int?
+
+  // Actions
+  executedActions      Json     @default("[]")
+  actionsStatus        String?  // 'PENDING', 'EXECUTED', 'FAILED'
+
+  // Full Audit Log
+  auditLog             Json     @default("[]")
+
+  // Human Review
+  escalationReason     String?  @db.Text
+  assignedTo           String?
+  humanDecision        String?
+  humanNotes           String?  @db.Text
+
+  // Compliance Metadata
+  complianceRulesChecked Json?
+  violationsFound      Json     @default("[]")
+
+  // Relations
+  auditTrailEntries    AuditTrailEntry[]
+  executionLogs        ExecutionLog[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([riskScore])
+}
+
+model ExecutionLog {
+  id              String   @id @default(uuid())
+  decisionId      String
+  decision        ComplianceDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  actionType      String   // 'create_ticket', 'send_alert', 'block_document', 'send_email'
+  actionStatus    String   // 'PENDING', 'SUCCESS', 'FAILED'
+  targetSystem    String?  // 'jira', 'slack', 'email', 'database'
+  targetId        String?
+
+  requestPayload  Json?
+  responsePayload Json?
+  errorMessage    String?  @db.Text
+
+  executedAt      DateTime @default(now())
+  completedAt     DateTime?
+
+  @@index([decisionId])
+  @@index([actionStatus])
+}
+
+model ComplianceRule {
+  id        String   @id @default(uuid())
+  ruleName  String
+  category  String   // 'fraud_detection', 'policy_validation', 'coverage_check'
+  ruleText  String   @db.Text
+  severity  String   // 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([category])
+  @@index([active])
+}
+
+model AuditTrailEntry {
+  id         String   @id @default(uuid())
+  decisionId String
+  decision   ComplianceDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  stepName   String   // 'retrieve_context', 'compliance_check', 'risk_ranking', 'decision_made', 'actions_executed'
+  stepNumber Int
+  inputData  Json?
+  outputData Json?
+  durationMs Int?
+  reasoning  String?  @db.Text
+  confidence Float?
+
+  executedAt DateTime @default(now())
+
+  @@index([decisionId])
+  @@index([stepName])
+}
+
+// ============================================================
+// CLINICAL AI PLATFORM MODELS
+// ============================================================
+
+model User {
+  id          String   @id @default(uuid())
+  firebaseUid String   @unique
+  email       String   @unique
+  displayName String?
+  role        String   @default("VIEWER") // ADMIN, DOCTOR, RESEARCHER, PATIENT, VIEWER
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  doctor      Doctor?
+  patient     Patient?
+}
+
+model Doctor {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName       String
+  lastName        String
+  specialization  String
+  licenseNumber   String   @unique
+  department      String?
+  hospital        String?
+  yearsExperience Int      @default(0)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  clinicalNotes   ClinicalNote[]
+  appointments    Appointment[]
+}
+
+model Patient {
+  id                String   @id @default(uuid())
+  userId            String?  @unique
+  user              User?    @relation(fields: [userId], references: [id])
+  mrn               String   @unique // Medical Record Number
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime
+  gender            String
+  bloodGroup        String?
+  allergies         String[]
+  chronicConditions String[]
+  emergencyContact  Json?
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  healthRecords     ElectronicHealthRecord[]
+  clinicalNotes     ClinicalNote[]
+  appointments      Appointment[]
+}
+
+model ElectronicHealthRecord {
+  id             String   @id @default(uuid())
+  patientId      String
+  patient        Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  recordType     String   // LAB_RESULT, IMAGING, PRESCRIPTION, PROCEDURE, VITAL_SIGNS
+  title          String
+  description    String?  @db.Text
+  data           Json
+  recordDate     DateTime
+  isConfidential Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([recordType])
+}
+
+model ClinicalNote {
+  id           String    @id @default(uuid())
+  patientId    String
+  patient      Patient   @relation(fields: [patientId], references: [id])
+  doctorId     String
+  doctor       Doctor    @relation(fields: [doctorId], references: [id])
+  noteType     String    // SOAP, PROGRESS, DISCHARGE, ADMISSION, CONSULTATION
+  title        String
+  subjective   String?   @db.Text
+  objective    String?   @db.Text
+  assessment   String?   @db.Text
+  plan         String?   @db.Text
+  rawContent   String?   @db.Text
+  aiSummary    String?   @db.Text
+  aiConfidence Float?
+  isSigned     Boolean   @default(false)
+  signedAt     DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+}
+
+model Appointment {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  doctorId        String
+  doctor          Doctor   @relation(fields: [doctorId], references: [id])
+  title           String
+  description     String?
+  appointmentDate DateTime
+  durationMinutes Int      @default(30)
+  status          String   @default("SCHEDULED") // SCHEDULED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW
+  type            String   @default("OUTPATIENT") // OUTPATIENT, INPATIENT, TELEMEDICINE, EMERGENCY
+  notes           String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([status])
+}
+
+model KnowledgeBaseDocument {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  source    String
+  category  String   // CLINICAL_GUIDELINE, RESEARCH_PAPER, DRUG_INFO, PROTOCOL
+  tags      String[]
+  isIndexed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String   // CREATE, READ, UPDATE, DELETE
+  resource   String
+  resourceId String?
+  details    Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([resource])
+  @@index([createdAt])
+}

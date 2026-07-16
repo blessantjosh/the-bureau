@@ -1,0 +1,191 @@
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: padding 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+
+  &.scrolled {
+    padding: 12px 0;
+    background: rgba(5, 8, 22, 0.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+  }
+}
+
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  margin-right: auto;
+  &:hover .logo-mark { transform: rotate(20deg) scale(1.08); }
+}
+
+.logo-mark {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 0 10px rgba(59,130,246,0.5));
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  letter-spacing: -0.025em;
+}
+
+.logo-accent {
+  background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0 16px 0 0;
+  padding: 0;
+  @media (max-width: 768px) { display: none; }
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.2s, background 0.2s;
+  &:hover { color: #F8FAFC; background: rgba(255,255,255,0.06); }
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  @media (max-width: 768px) { display: none; }
+}
+
+.btn-ghost {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #CBD5E1;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.22s;
+  &:hover { border-color: rgba(255,255,255,0.22); color: #F8FAFC; background: rgba(255,255,255,0.05); }
+  &.w-full { width: 100%; }
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 18px rgba(59,130,246,0.38);
+  transition: box-shadow 0.25s, transform 0.25s;
+  svg { transition: transform 0.2s; }
+  &:hover { box-shadow: 0 8px 28px rgba(59,130,246,0.6); transform: translateY(-1px); svg { transform: translateX(3px); } }
+  &.w-full { width: 100%; justify-content: center; }
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 9px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: auto;
+  @media (max-width: 768px) { display: flex; align-items: center; justify-content: center; }
+
+  span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: #F8FAFC;
+    border-radius: 2px;
+    position: relative;
+    transition: background 0.3s;
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: #F8FAFC;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    &::before { top: -5px; }
+    &::after { bottom: -5px; }
+    &.open { background: transparent; &::before { transform: rotate(45deg) translate(3.5px, 3.5px); } &::after { transform: rotate(-45deg) translate(3.5px, -3.5px); } }
+  }
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  padding: 12px 24px 20px;
+  background: rgba(5,8,22,0.97);
+  backdrop-filter: blur(28px);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  animation: slideDown 0.22s ease;
+  @media (max-width: 768px) { display: flex; }
+}
+
+.mobile-link {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 12px 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: color 0.2s;
+  &:hover { color: #F8FAFC; }
+}
+
+.mobile-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,41 @@
+<section class="workflow section-py" id="workflow" aria-labelledby="wf-heading">
+  <div class="container">
+    <div class="workflow-intro fade-in-up">
+      <span class="chip">How It Works</span>
+      <h2 class="sec-heading" id="wf-heading">Five steps from<br><span class="grad-bp">document to decision</span></h2>
+      <p class="sec-sub">A fully automated pipeline that handles the entire lifecycle — no manual intervention required.</p>
+    </div>
+
+    <div class="wf-steps" role="tablist" aria-label="Workflow steps">
+      @for (s of steps; track s.num; let i = $index) {
+        <button class="wf-step" [class.active]="active() === i" (click)="select(i)" role="tab" [attr.aria-selected]="active() === i" [attr.aria-label]="s.title" [style.--sc]="s.color">
+          <div class="step-num">{{ s.num }}</div>
+          <div class="step-tname">{{ s.title }}</div>
+          @if (i < steps.length - 1) {
+            <div class="step-conn" [class.active]="active() > i" aria-hidden="true">
+              <div class="conn-fill"></div>
+            </div>
+          }
+        </button>
+      }
+    </div>
+
+    <div class="wf-detail" role="tabpanel">
+      @for (s of steps; track s.num; let i = $index) {
+        @if (active() === i) {
+          <div class="detail-card" [style.--sc]="s.color">
+            <div class="detail-icon">{{ s.icon }}</div>
+            <div class="detail-body">
+              <div class="detail-num">Step {{ s.num }}</div>
+              <h3 class="detail-title">{{ s.title }}</h3>
+              <p class="detail-desc">{{ s.desc }}</p>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.background]="s.color"></div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</section>

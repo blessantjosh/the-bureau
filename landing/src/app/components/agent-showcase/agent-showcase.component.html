@@ -1,0 +1,52 @@
+<section class="showcase section-py" id="agents" aria-labelledby="agents-heading">
+  <div class="container">
+    <div class="showcase-intro fade-in-up">
+      <span class="chip">AI Workforce</span>
+      <h2 class="sec-heading" id="agents-heading">Meet your <span class="grad-bp">autonomous agents</span></h2>
+      <p class="sec-sub">Specialized AI agents trained for specific enterprise domains, working 24/7 with superhuman consistency.</p>
+    </div>
+
+    <div class="agents-grid">
+      @for (a of agents; track a.name; let i = $index) {
+        <div class="agent-card fade-in-up" [class.expanded]="expanded() === i" [style.--ac]="a.color" (click)="toggle(i)" role="button" [attr.aria-expanded]="expanded() === i" [attr.aria-label]="a.name + ' agent details'">
+          <div class="agent-head">
+            <div class="agent-avatar" [style.background]="'linear-gradient(135deg,' + a.color + ',rgba(139,92,246,.8))'">
+              <span>{{ a.name[0] }}</span>
+            </div>
+            <div class="agent-meta">
+              <div class="agent-name">{{ a.name }}</div>
+              <div class="agent-role">{{ a.role }}</div>
+            </div>
+            <div class="agent-status" [class.active]="a.status === 'Active'">
+              <span class="status-dot"></span>{{ a.status }}
+            </div>
+          </div>
+
+          <div class="agent-stats">
+            <div class="astat"><div class="astat-v">{{ a.docs }}</div><div class="astat-l">Docs Processed</div></div>
+            <div class="astat"><div class="astat-v">{{ a.decisions }}</div><div class="astat-l">Avg Latency</div></div>
+            <div class="astat"><div class="astat-v">{{ a.accuracy }}</div><div class="astat-l">Accuracy</div></div>
+          </div>
+
+          @if (expanded() === i) {
+            <div class="agent-caps">
+              <div class="caps-label">Capabilities</div>
+              <div class="caps-grid">
+                @for (cap of a.capabilities; track cap) {
+                  <div class="cap-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                    {{ cap }}
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="expand-hint" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [style.transform]="expanded() === i ? 'rotate(180deg)' : 'none'" style="transition:transform .3s"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
