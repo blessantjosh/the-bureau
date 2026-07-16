@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -18,6 +18,8 @@ interface NavItem {
 })
 export class App implements OnInit, AfterViewInit, OnDestroy {
   private readonly API_BASE = 'http://localhost:3000/api';
+
+  @ViewChild('routeView') routeView?: ElementRef<HTMLDivElement>;
 
   currentTheme: 'light' | 'dark' = 'light';
   healthOk = false;
@@ -76,6 +78,22 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
 
   closeSidebar(): void {
     this.sidebarOpen = false;
+  }
+
+  /**
+   * Every route swap is otherwise instant/abrupt. This retriggers a CSS
+   * entrance animation (defined in app.scss) on the wrapper around
+   * <router-outlet> each time a new page component activates, so
+   * navigating between Dashboard / Patients / AI Assistant / etc. feels
+   * like a soft fade+lift instead of a hard snap.
+   */
+  onRouteActivate(): void {
+    const el = this.routeView?.nativeElement;
+    if (!el) return;
+    el.classList.remove('route-anim');
+    // force reflow so the animation restarts even if the class name is unchanged
+    void el.offsetWidth;
+    el.classList.add('route-anim');
   }
 
   private async checkHealth(): Promise<void> {
